@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KRSController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -42,4 +43,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users/{id}/profile-dosen', [DosenProfileController::class, 'store']);
     Route::put('/users/{id}/profile-dosen', [DosenProfileController::class, 'update']);
     Route::patch('/users/{id}/profile-dosen', [DosenProfileController::class, 'update']);
+});
+
+Route::middleware('auth:sanctum')->prefix('krs')->group(function () {
+    Route::get('/', [KRSController::class, 'index']);
+    Route::post('/', [KRSController::class, 'store']);
+    Route::get('{id}', [KRSController::class, 'show']);
+    Route::delete('{id}', [KRSController::class, 'destroy']);
+    Route::post('{id}/submit', [KRSController::class, 'submit']);
+    Route::post('{id}/approve', [KRSController::class, 'approve']);
+    Route::get('{id}/detail', [KRSController::class, 'details']);
+    Route::post('{id}/detail', [KRSController::class, 'addDetail']);
+    Route::delete('{id}/detail/{detailId}', [KRSController::class, 'removeDetail']);
 });
