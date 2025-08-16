@@ -14,6 +14,7 @@ use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\DosenProfileController;
 use App\Http\Controllers\JadwalKuliahController;
+use App\Http\Controllers\MateriKuliahController;
 use App\Http\Controllers\TahunAkademikController;
 use App\Http\Controllers\MahasiswaProfileController;
 
@@ -77,4 +78,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // Tambahan
     Route::post('/khs/generate', [KhsController::class, 'generate']); // generate KHS dari nilai
     Route::get('/khs/ipk/{mahasiswa_id}', [KhsController::class, 'ipk']); // hitung IPK kumulatif
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/materi-kuliah', [MateriKuliahController::class, 'index']);
+    Route::get('/materi-kuliah/{id}', [MateriKuliahController::class, 'show']);
+    Route::post('/materi-kuliah', [MateriKuliahController::class, 'store']);
+    Route::put('/materi-kuliah/{id}', [MateriKuliahController::class, 'update']);
+    Route::delete('/materi-kuliah/{id}', [MateriKuliahController::class, 'destroy']);
 });

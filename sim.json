@@ -1790,50 +1790,92 @@
 
         "/materi-kuliah": {
             "get": {
-                "tags": ["Materi Kuliah"],
-                "summary": "List materi",
+                "summary": "List Materi Kuliah",
                 "parameters": [
-                    { "$ref": "#/components/parameters/PageParam" },
-                    { "$ref": "#/components/parameters/PerPageParam" },
                     {
                         "name": "jadwal_kuliah_id",
+                        "in": "query",
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "per_page",
                         "in": "query",
                         "schema": { "type": "integer" }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/MateriKuliah"
-                                    }
-                                }
-                            }
-                        }
+                        "description": "Daftar materi kuliah"
                     }
                 }
             },
             "post": {
-                "tags": ["Materi Kuliah"],
-                "summary": "Upload materi (multipart)",
+                "summary": "Upload Materi Kuliah",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
                                 "type": "object",
+                                "properties": {
+                                    "jadwal_kuliah_id": { "type": "integer" },
+                                    "judul": { "type": "string" },
+                                    "deskripsi": { "type": "string" },
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
                                 "required": [
                                     "jadwal_kuliah_id",
                                     "judul",
                                     "file"
-                                ],
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Materi berhasil diupload" },
+                    "400": { "description": "Validasi gagal" }
+                }
+            }
+        },
+        "/materi-kuliah/{id}": {
+            "get": {
+                "summary": "Detail Materi Kuliah",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Detail materi kuliah" },
+                    "404": { "description": "Data tidak ditemukan" }
+                }
+            },
+            "put": {
+                "summary": "Update Materi Kuliah",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
                                 "properties": {
-                                    "jadwal_kuliah_id": { "type": "integer" },
                                     "judul": { "type": "string" },
+                                    "deskripsi": { "type": "string" },
                                     "file": {
                                         "type": "string",
                                         "format": "binary"
@@ -1843,15 +1885,25 @@
                         }
                     }
                 },
-                "responses": { "201": { "description": "Uploaded" } }
-            }
-        },
-        "/materi-kuliah/{id}": {
+                "responses": {
+                    "200": { "description": "Materi berhasil diperbarui" },
+                    "404": { "description": "Data tidak ditemukan" }
+                }
+            },
             "delete": {
-                "tags": ["Materi Kuliah"],
-                "summary": "Hapus materi",
-                "parameters": [{ "$ref": "#/components/parameters/ID" }],
-                "responses": { "204": { "description": "Deleted" } }
+                "summary": "Hapus Materi Kuliah",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Materi berhasil dihapus" },
+                    "404": { "description": "Data tidak ditemukan" }
+                }
             }
         },
 
