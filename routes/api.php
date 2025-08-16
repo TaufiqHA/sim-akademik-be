@@ -6,6 +6,7 @@ use App\Http\Controllers\KRSController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\FakultasController;
@@ -55,4 +56,12 @@ Route::middleware('auth:sanctum')->prefix('krs')->group(function () {
     Route::get('{id}/detail', [KRSController::class, 'details']);
     Route::post('{id}/detail', [KRSController::class, 'addDetail']);
     Route::delete('{id}/detail/{detailId}', [KRSController::class, 'removeDetail']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/nilai', [NilaiController::class, 'index']);
+    Route::get('/nilai/{id}', [NilaiController::class, 'show']);
+    Route::post('/nilai', [NilaiController::class, 'store']);
+    Route::delete('/nilai/{id}', [NilaiController::class, 'destroy']);
+    Route::post('/nilai/{id}/finalize', [NilaiController::class, 'finalize']);
 });
