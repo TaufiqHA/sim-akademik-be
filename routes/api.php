@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\DosenProfileController;
 use App\Http\Controllers\MahasiswaProfileController;
@@ -24,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('fakultas', FakultasController::class);
+    Route::apiResource('prodi', ProdiController::class);
     Route::get('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'show']);
     Route::post('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'store']);
     Route::put('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'update']);
