@@ -9,6 +9,7 @@ use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\DosenProfileController;
+use App\Http\Controllers\TahunAkademikController;
 use App\Http\Controllers\MahasiswaProfileController;
 
 Route::get('/user', function (Request $request) {
@@ -28,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('fakultas', FakultasController::class);
     Route::apiResource('prodi', ProdiController::class);
     Route::apiResource('jurusan', JurusanController::class);
+    Route::apiResource('tahun-akademik', TahunAkademikController::class);
+    Route::post('tahun-akademik/{id}/set-aktif', [TahunAkademikController::class, 'setAktif']);
     Route::get('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'show']);
     Route::post('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'store']);
     Route::put('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'update']);
