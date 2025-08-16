@@ -573,6 +573,64 @@
           "200": { "description": "Saved" },
           "422": { "$ref": "#/components/responses/ValidationError" }
         }
+      },
+      "patch": {
+        "tags": ["Mahasiswa Profile"],
+        "summary": "Update sebagian data profil mahasiswa",
+        "description": "Update data profil mahasiswa secara partial.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID user (mahasiswa)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nim": { "type": "string" },
+                  "tanggal_lahir": { "type": "string", "format": "date" },
+                  "alamat": { "type": "string" },
+                  "angkatan": { "type": "integer" },
+                  "status": {
+                    "type": "string",
+                    "enum": ["aktif", "nonaktif", "cuti", "lulus"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profil mahasiswa berhasil diperbarui (partial)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Profil mahasiswa berhasil diperbarui",
+                  "data": {
+                    "user_id": 7,
+                    "nim": "2256001",
+                    "alamat": "Jl. Pahlawan No. 12, Bandung",
+                    "angkatan": 2023,
+                    "status": "cuti"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Profil mahasiswa tidak ditemukan"
+          }
+        }
       }
     },
     "/users/{id}/profile-dosen": {

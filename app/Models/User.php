@@ -74,10 +74,10 @@ class User extends Authenticatable
     /**
      * Relasi ke profil mahasiswa.
      */
-    // public function mahasiswaProfile()
-    // {
-    //     return $this->hasOne(MahasiswaProfile::class);
-    // }
+    public function mahasiswaProfile()
+    {
+        return $this->hasOne(MahasiswaProfile::class);
+    }
 
     // /**
     //  * Relasi ke profil dosen.
