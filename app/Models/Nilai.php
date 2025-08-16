@@ -15,4 +15,15 @@ class Nilai extends Model
         'nilai_akhir'
     ];
 
+    public function jadwalKuliah()
+    {
+        return $this->belongsTo(JadwalKuliah::class, 'jadwal_kuliah_id');
+    }
+
+    public function mahasiswa()
+    {
+        return $this->belongsTo(User::class, 'mahasiswa_id');
+    }
+
+
 }

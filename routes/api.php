@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KhsController;
 use App\Http\Controllers\KRSController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
@@ -64,4 +65,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/nilai', [NilaiController::class, 'store']);
     Route::delete('/nilai/{id}', [NilaiController::class, 'destroy']);
     Route::post('/nilai/{id}/finalize', [NilaiController::class, 'finalize']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Sesuai API Spec
+    Route::get('/khs', [KhsController::class, 'index']);              // list KHS
+    Route::get('/khs/{id}', [KhsController::class, 'show']);          // detail KHS
+    Route::get('/khs/{id}/detail', [KhsController::class, 'detail']); // detail mata kuliah
+    Route::get('/khs/{id}/download', [KhsController::class, 'download']); // export PDF
+
+    // Tambahan
+    Route::post('/khs/generate', [KhsController::class, 'generate']); // generate KHS dari nilai
+    Route::get('/khs/ipk/{mahasiswa_id}', [KhsController::class, 'ipk']); // hitung IPK kumulatif
 });
