@@ -82,10 +82,10 @@ class User extends Authenticatable
     // /**
     //  * Relasi ke profil dosen.
     //  */
-    // public function dosenProfile()
-    // {
-    //     return $this->hasOne(DosenProfile::class);
-    // }
+    public function dosenProfile()
+    {
+        return $this->hasOne(DosenProfile::class);
+    }
 
     // /**
     //  * Relasi ke dokumen akademik yang diupload.

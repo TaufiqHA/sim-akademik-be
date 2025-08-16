@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DosenProfileController;
 use App\Http\Controllers\MahasiswaProfileController;
 
 Route::get('/user', function (Request $request) {
@@ -24,4 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'show']);
     Route::post('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'store']);
     Route::put('/users/{id}/profile-mahasiswa', [MahasiswaProfileController::class, 'update']);
+    Route::get('/users/{id}/profile-dosen', [DosenProfileController::class, 'show']);
+    Route::post('/users/{id}/profile-dosen', [DosenProfileController::class, 'store']);
+    Route::put('/users/{id}/profile-dosen', [DosenProfileController::class, 'update']);
+    Route::patch('/users/{id}/profile-dosen', [DosenProfileController::class, 'update']);
 });

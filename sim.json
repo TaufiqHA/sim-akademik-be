@@ -663,7 +663,129 @@
           }
         },
         "responses": { "200": { "description": "Saved" } }
+      },
+      "put": {
+        "tags": ["Dosen Profile"],
+        "summary": "Update profil dosen",
+        "description": "Update penuh data profil dosen berdasarkan user_id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID user (dosen)",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nidn", "jabatan", "status"],
+                "properties": {
+                  "nidn": { "type": "string", "maxLength": 20 },
+                  "jabatan": { "type": "string", "maxLength": 100 },
+                  "keahlian": { "type": "string", "maxLength": 255 },
+                  "status": {
+                    "type": "string",
+                    "enum": ["aktif", "nonaktif", "pensiun"]
+                  }
+                }
+              },
+              "example": {
+                "nidn": "123456789",
+                "jabatan": "Lektor Kepala",
+                "keahlian": "Kecerdasan Buatan",
+                "status": "aktif"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profil dosen berhasil diperbarui (full update)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Profil dosen berhasil diperbarui",
+                  "data": {
+                    "user_id": 6,
+                    "nidn": "123456789",
+                    "jabatan": "Lektor Kepala",
+                    "keahlian": "Kecerdasan Buatan",
+                    "status": "aktif"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Profil dosen tidak ditemukan"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Dosen Profile"],
+        "summary": "Update sebagian profil dosen",
+        "description": "Update sebagian data profil dosen berdasarkan user_id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID user (dosen)",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nidn": { "type": "string", "maxLength": 20 },
+                  "jabatan": { "type": "string", "maxLength": 100 },
+                  "keahlian": { "type": "string", "maxLength": 255 },
+                  "status": {
+                    "type": "string",
+                    "enum": ["aktif", "nonaktif", "pensiun"]
+                  }
+                }
+              },
+              "example": {
+                "keahlian": "Sistem Informasi",
+                "status": "nonaktif"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profil dosen berhasil diperbarui (partial update)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Profil dosen berhasil diperbarui",
+                  "data": {
+                    "user_id": 6,
+                    "nidn": "123456789",
+                    "jabatan": "Lektor Kepala",
+                    "keahlian": "Sistem Informasi",
+                    "status": "nonaktif"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Profil dosen tidak ditemukan"
+          }
+        }
       }
+
     },
 
     "/fakultas": {
