@@ -16,6 +16,7 @@ use App\Http\Controllers\DosenProfileController;
 use App\Http\Controllers\JadwalKuliahController;
 use App\Http\Controllers\MateriKuliahController;
 use App\Http\Controllers\TahunAkademikController;
+use App\Http\Controllers\DokumenAkademikController;
 use App\Http\Controllers\MahasiswaProfileController;
 
 Route::get('/user', function (Request $request) {
@@ -86,4 +87,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/materi-kuliah', [MateriKuliahController::class, 'store']);
     Route::put('/materi-kuliah/{id}', [MateriKuliahController::class, 'update']);
     Route::delete('/materi-kuliah/{id}', [MateriKuliahController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dokumen-akademik', [DokumenAkademikController::class, 'index']);
+    Route::post('/dokumen-akademik', [DokumenAkademikController::class, 'store']);
+    Route::get('/dokumen-akademik/{id}', [DokumenAkademikController::class, 'show']);
+    Route::delete('/dokumen-akademik/{id}', [DokumenAkademikController::class, 'destroy']);
+    Route::post('/dokumen-akademik/{id}/approve', [DokumenAkademikController::class, 'approve']);
+    Route::post('/dokumen-akademik/{id}/reject', [DokumenAkademikController::class, 'reject']);
 });
