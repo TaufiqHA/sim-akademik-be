@@ -11,6 +11,7 @@ use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\FakultasController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\DosenProfileController;
 use App\Http\Controllers\JadwalKuliahController;
@@ -96,4 +97,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/dokumen-akademik/{id}', [DokumenAkademikController::class, 'destroy']);
     Route::post('/dokumen-akademik/{id}/approve', [DokumenAkademikController::class, 'approve']);
     Route::post('/dokumen-akademik/{id}/reject', [DokumenAkademikController::class, 'reject']);
+});
+
+Route::prefix('dashboard')->group(function () {
+    Route::get('/super-admin', [DashboardController::class, 'superAdmin']);
+    Route::get('/fakultas/{id}', [DashboardController::class, 'fakultas']);
+    Route::get('/prodi/{id}', [DashboardController::class, 'prodi']);
+    Route::get('/dosen', [DashboardController::class, 'dosen']);
+    Route::get('/mahasiswa', [DashboardController::class, 'mahasiswa']);
 });
