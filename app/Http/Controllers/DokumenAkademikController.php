@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\DokumenAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class DokumenAkademikController extends Controller
 {
@@ -27,10 +28,17 @@ class DokumenAkademikController extends Controller
     // Upload dokumen
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'jenis_dokumen' => 'required|string|max:100',
             'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120',
         ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
         $path = $request->file('file')->store('dokumen-akademik', 'public');
 

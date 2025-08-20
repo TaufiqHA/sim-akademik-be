@@ -11,6 +11,7 @@ use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\FakultasController;
+use App\Http\Controllers\YudisiumController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\DosenProfileController;
@@ -105,4 +106,15 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/prodi/{id}', [DashboardController::class, 'prodi']);
     Route::get('/dosen', [DashboardController::class, 'dosen']);
     Route::get('/mahasiswa', [DashboardController::class, 'mahasiswa']);
+});
+
+Route::middleware('auth:sanctum')->prefix('yudisium')->group(function () {
+    // List & Create
+    Route::get('/', [YudisiumController::class, 'index']);
+    Route::post('/', [YudisiumController::class, 'store']);
+
+    // Approve, Reject, Check Eligibility
+    Route::post('{id}/approve', [YudisiumController::class, 'approve']);
+    Route::post('{id}/reject', [YudisiumController::class, 'reject']);
+    Route::get('{id}/check-eligibility', [YudisiumController::class, 'checkEligibility']);
 });
