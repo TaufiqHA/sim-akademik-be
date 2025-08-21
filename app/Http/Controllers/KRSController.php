@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KRS;
 use App\Models\KRSDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KRSController extends Controller
 {
@@ -133,5 +134,49 @@ class KRSController extends Controller
         $detail->delete();
         return response()->json(null, 204);
     }
+
+    public function getByJadwal(Request $request)
+    {
+        $jadwalId = $request->query('jadwal_kuliah_id');
+
+        if (!$jadwalId) {
+            return response()->json([
+                'message' => 'jadwal_kuliah_id wajib diisi'
+            ], 400);
+        }
+
+        $data = DB::table('k_r_s')
+            ->join('k_r_s_detail', 'k_r_s_detail.krs_id', '=', 'k_r_s.id')
+            ->join('users', 'users.id', '=', 'k_r_s.mahasiswa_id')
+            ->join('mahasiswa_profiles', 'mahasiswa_profiles.user_id', '=', 'users.id')
+            ->select(
+                'k_r_s.id',
+                'k_r_s.mahasiswa_id',
+                'k_r_s_detail.jadwal_kuliah_id',
+                'k_r_s.status',
+                'users.id as mhs_user_id',
+                'users.nama',
+                'mahasiswa_profiles.nim'
+            )
+            ->where('k_r_s_detail.jadwal_kuliah_id', $jadwalId)
+            ->where('k_r_s.status', 'Approved')
+            ->get()
+            ->map(function ($row) {
+                return [
+                    'id' => $row->id,
+                    'mahasiswa_id' => $row->mahasiswa_id,
+                    'jadwal_kuliah_id' => $row->jadwal_kuliah_id,
+                    'status' => $row->status,
+                    'mahasiswa' => [
+                        'id' => $row->mhs_user_id,
+                        'nama' => $row->nama,
+                        'nim' => $row->nim
+                    ]
+                ];
+            });
+
+        return response()->json($data);
+    }
+
 
 }

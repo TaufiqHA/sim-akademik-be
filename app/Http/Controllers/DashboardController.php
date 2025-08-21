@@ -9,6 +9,7 @@ use App\Models\Jurusan;
 use App\Models\Fakultas;
 use App\Models\JadwalKuliah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -80,5 +81,60 @@ class DashboardController extends Controller
             ],
         ]);
     }
+
+    public function getDashboardTuProdi($id)
+    {
+        // Pastikan ID prodi valid
+        $prodiId = (int) $id;
+
+        // Total Mahasiswa di Prodi
+        $totalMahasiswa = DB::table('users')
+            ->where('role_id', function ($query) {
+                $query->select('id')
+                      ->from('roles')
+                      ->where('nama_role', 'Mahasiswa');
+            })
+            ->where('prodi_id', $prodiId)
+            ->count();
+
+        // Total Dosen di Prodi
+        $totalDosen = DB::table('users')
+            ->where('role_id', function ($query) {
+                $query->select('id')
+                      ->from('roles')
+                      ->where('nama_role', 'Dosen');
+            })
+            ->where('prodi_id', $prodiId)
+            ->count();
+
+        // KRS Pending (Submitted, belum Approved)
+        $krsPending = DB::table('k_r_s')
+            ->join('users', 'k_r_s.mahasiswa_id', '=', 'users.id')
+            ->where('users.prodi_id', $prodiId)
+            ->where('k_r_s.status', 'Submitted')
+            ->count();
+
+        // Surat Pending (dokumen akademik dengan status Pending)
+        $suratPending = DB::table('dokumen_akademiks')
+            ->join('users', 'dokumen_akademiks.uploaded_by', '=', 'users.id')
+            ->where('users.prodi_id', $prodiId)
+            ->where('dokumen_akademiks.status', 'Pending')
+            ->count();
+
+        // Jadwal Kuliah untuk Prodi
+        $jadwalKuliah = DB::table('jadwal_kuliahs')
+            ->join('mata_kuliahs', 'jadwal_kuliahs.mata_kuliah_id', '=', 'mata_kuliahs.id')
+            ->where('mata_kuliahs.prodi_id', $prodiId)
+            ->count();
+
+        return response()->json([
+            'total_mahasiswa' => $totalMahasiswa,
+            'krs_pending' => $krsPending,
+            'surat_pending' => $suratPending,
+            'total_dosen' => $totalDosen,
+            'jadwal_kuliah' => $jadwalKuliah,
+        ]);
+    }
+
 
 }

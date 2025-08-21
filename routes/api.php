@@ -14,6 +14,7 @@ use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\YudisiumController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\JadwalUjianController;
 use App\Http\Controllers\DosenProfileController;
 use App\Http\Controllers\JadwalKuliahController;
 use App\Http\Controllers\MateriKuliahController;
@@ -61,6 +62,7 @@ Route::middleware('auth:sanctum')->prefix('krs')->group(function () {
     Route::get('{id}/detail', [KRSController::class, 'details']);
     Route::post('{id}/detail', [KRSController::class, 'addDetail']);
     Route::delete('{id}/detail/{detailId}', [KRSController::class, 'removeDetail']);
+    Route::get('/krs/by-jadwal', [KRSController::class, 'getByJadwal']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -106,7 +108,8 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/prodi/{id}', [DashboardController::class, 'prodi']);
     Route::get('/dosen', [DashboardController::class, 'dosen']);
     Route::get('/mahasiswa', [DashboardController::class, 'mahasiswa']);
-});
+    Route::get('/tu-prodi/{id}', [DashboardController::class, 'getDashboardTuProdi']);
+})->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->prefix('yudisium')->group(function () {
     // List & Create
@@ -117,4 +120,10 @@ Route::middleware('auth:sanctum')->prefix('yudisium')->group(function () {
     Route::post('{id}/approve', [YudisiumController::class, 'approve']);
     Route::post('{id}/reject', [YudisiumController::class, 'reject']);
     Route::get('{id}/check-eligibility', [YudisiumController::class, 'checkEligibility']);
+});
+
+Route::prefix('jadwal-ujian')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [JadwalUjianController::class, 'store']);
+    Route::put('/{id}', [JadwalUjianController::class, 'update']);
+    Route::delete('/{id}', [JadwalUjianController::class, 'destroy']);
 });
